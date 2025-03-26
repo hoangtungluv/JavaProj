@@ -1,0 +1,81 @@
+package fita.vnua;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class QLHS 
+{
+	private ArrayList<HocSinh>dshs;
+	
+	public QLHS() {
+		//...<Khởi tạo danh sách với 100 phần tử>...
+		dshs = new ArrayList<HocSinh>(100);
+		
+	}
+	
+	public void themHocSinh(HocSinh hs){
+		//...<Thêm vào ArrayList dùng phương thức add()>...
+		dshs.add(hs);
+		
+	}
+
+	public void nhapDanhSach(Scanner sc) {
+		// Nhap so hoc sinh can nhap n
+		System.out.println("Nhap so hs n=");
+		int n = sc.nextInt(); sc.nextLine();
+		
+		//...<Vòng lặp 0->(n-1): nhập thông tin học sinh và thêm vào danh sách>...
+		for( int i=0;i<n;i++)
+		{
+			HocSinh hs = new HocSinh();
+			hs.nhapThongTin(sc);
+			themHocSinh(hs);
+		}
+		
+	}
+	
+	public void inDanhSach()  
+	{
+		//...<Dùng vòng lặp foreach duyệt qua dshs để in thông tin mỗi học sinh>...
+		for(HocSinh hs : dshs) 
+		{
+			hs.inThongTin();
+		}
+		
+	}
+	
+	public void timKiemHocSinh(int namSinh, String queQuan)
+	{
+		//...<Duyệt dshs, so sánh thông tin năm sinh và quê quán, nếu trùng thì in ra>...
+		for(HocSinh hs : dshs) 
+		{
+			if(queQuan.equals(hs.queQuan) && (namSinh == hs.ngaySinh.getYear()+ 1900 ) ) {
+				hs.inThongTin();
+			}
+		}
+		
+	}
+	
+	public void timKiemHocSinh(String lop) 
+	{
+		// duyet dshs, so sanh thong tin lop , neu trung thi in ra
+		for(HocSinh hs : dshs) 
+		{
+			if(lop.equals(hs.getlop()))
+			{
+				hs.inThongTin();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		QLHS qlhs = new QLHS();
+		Scanner sc = new Scanner(System.in);
+		qlhs.nhapDanhSach(sc);
+		qlhs.timKiemHocSinh(2005, "Hung Yen");
+		qlhs.timKiemHocSinh("12A2");
+		
+	}
+	
+}
