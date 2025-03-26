@@ -1,0 +1,84 @@
+package fita.vnua;
+
+import java.util.Date;
+import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class Nguoi 
+{
+	protected String hoTen;
+	protected Date ngaySinh;
+	protected String queQuan;
+	
+	public Nguoi(){
+		
+	}
+	
+	
+	public Nguoi(String hoTen ,Date ngaySinh) {
+		this.hoTen = hoTen;
+		this.ngaySinh = ngaySinh;
+	}
+	
+	public Nguoi(String hoTen ,Date ngaySinh, String queQuan)
+	{
+		this(hoTen,ngaySinh);
+		this.queQuan = queQuan;
+		
+	}
+	
+	public void nhapThongTin(Scanner sc) {
+		System.out.println("Nhap ho ten:");
+		hoTen = sc.nextLine();
+		System.out.println("Nhap ngay sinh(dd/mm/yyyy):");
+		String ngaySinhStr = sc.nextLine();
+		//chuyển chuỗi ngày sinh sang dang date
+		ngaySinh = stringToDate(ngaySinhStr);
+		
+		
+		System.out.println("Nhap que quan:");
+		queQuan = sc.nextLine();
+		
+	}
+	
+	public Date stringToDate(String ngaySinhStr) {
+		Date ngaySinhDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+		try {
+			ngaySinhDate = sdf.parse(ngaySinhStr);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("loi chuyen doi ngay sinh");
+		}
+		
+		return ngaySinhDate;
+		
+	}
+	
+	public void inThongTin() {
+		
+		System.out.println("Ho va Ten:"+hoTen);
+		System.out.println("Ngay Sinh:"+ngaySinh);
+		System.out.println("Que Quan:"+queQuan);
+		System.out.println("=========");
+	}
+	
+	public static void main(String[] args) {
+		//Tao thong tin nguoi
+		Nguoi ng1 = new Nguoi("Chu Van Tai", new Date(), "Hung Yen");
+		Nguoi ng2 = new Nguoi("Tong Van Tam", new Date(),"Son La");
+		Nguoi ng3 = new Nguoi();
+		
+		
+		//Nhap thong tin
+		Scanner sc = new Scanner(System.in);
+		ng3.nhapThongTin(sc);
+		
+		//In thong tin
+		ng1.inThongTin();
+		ng2.inThongTin();
+		ng3.inThongTin();
+	}
+}
