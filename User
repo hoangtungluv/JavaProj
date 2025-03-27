@@ -1,0 +1,48 @@
+package register.fxml;
+
+public class User {
+	private Integer order;
+	private String email;
+	private String fullname;
+
+	public User(){
+		
+	}
+	
+	public User(String email, String fullname){
+		this.email = email;
+		this.fullname = fullname;
+	}
+	
+	
+	
+	public User(Integer order, String email, String fullname) {
+		this.setOrder(order);
+		this.email = email;
+		this.fullname = fullname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getFullname() {
+		return fullname;
+	}
+	
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+}
