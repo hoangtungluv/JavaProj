@@ -1,0 +1,136 @@
+package register.fxml;
+
+import java.net.URL;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class HomeController implements Initializable{
+	@FXML
+	private TableView<User> userListTV;
+	@FXML
+	private TableColumn<User, Integer> orderCol;
+	@FXML
+	private TableColumn<User, String> emailCol;
+	@FXML
+	private TableColumn<User, String> fullnameCol;
+	@FXML
+	private TextField emailTf;
+	@FXML
+	private TextField fullnameTf;
+	
+	
+	private UserDAO userDao;
+	
+	//Phuong thuc chay khi khoi tao load GUI
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		//Thuc hien mot so thu tuc khoi tao,cau hinh
+		orderCol.setCellValueFactory(new PropertyValueFactory<User, Integer>("order"));
+		emailCol.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
+		fullnameCol.setCellValueFactory(new PropertyValueFactory<User, String>("fullname"));
+
+		loadUserListToTableView();
+	}
+	
+	private void loadUserListToTableView() {
+		List<User> listUser = userDao.listAllUser();
+		ObservableList<User> obsUserList = FXCollections.observableArrayList(listUser);
+		
+		userListTV.setItems(obsUserList);
+	}
+	
+	@FXML
+	public void onClickRow() {
+		//Lay ra doi tuong user cap du lieu cho dong duoc chon
+		User selectedUser = userListTV.getSelectionModel().getSelectedItem();
+		
+		//Ghi vao form ben phai
+		emailTf.setText(selectedUser.getEmail());
+		fullnameTf.setText(selectedUser.getFullname());
+	}
+	
+	@FXML
+	public void onClickAddBtn() {
+		//Lay dl tu form
+		User newUser = new User(emailTf.getText(), fullnameTf.getText());
+		
+		//Them moi vao CSDL
+		boolean insertResult = userDao.addUser(newUser);
+		
+		//Tai lai ds User vao table view
+		if(insertResult) {
+			loadUserListToTableView();
+		}else {
+			System.out.println("Loi them moi user");
+		}
+		
+	}
+	
+	public void onClickUpdateBtn() {
+		// Lay dl tu form
+		User newUser = new User(emailTf.getText(), fullnameTf.getText());
+
+		// Them moi vao CSDL
+		boolean updateResult = userDao.updateUser(newUser);
+
+		// Tai lai ds User vao table view
+		if (updateResult) {
+			loadUserListToTableView();
+		} else {
+			System.out.println("Loi cap nhat user");
+		}
+
+	}
+
+	public void onClickDeleteBtn() {
+		
+		if(showConfirmation(fullnameTf.getText())) {
+		}	
+		
+		// xoa khoi CSDL
+		boolean deleteResult = userDao.deleteUser(emailTf.getText());
+
+		// Tai lai ds User vao table view
+		if (deleteResult) {
+			loadUserListToTableView();
+		} else {
+			System.out.println("Lỗi xóa user");
+	
+		}
+}
+	
+	
+	private boolean showConfirmation(String fullname) {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Delete File");
+		alert.setHeaderText("Bạn có muốn xóa người này ?");
+		alert.setContentText(fullname);
+
+		
+		Optional<ButtonType> option = alert.showAndWait();
+
+
+ 
+		if (option.get() == ButtonType.OK) {
+			return true;
+		}else {
+			return false;
+		}
+
+	}
+}
